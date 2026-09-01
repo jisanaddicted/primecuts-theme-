@@ -34,16 +34,16 @@
       <div class="pc-card__header">
         <div class="pc-card__pills">
           {% if settings.product_card_show_vendor and product.vendor != blank %}
-            <span class="pc-pill pc-pill--dark">{{ product.vendor }}</span>
+            <span class="pc-card__pill pc-card__pill--dark">{{ product.vendor }}</span>
           {% endif %}
           {% if settings.product_card_show_type and product.type != blank %}
-            <span class="pc-pill pc-pill--outline">{{ product.type }}</span>
+            <span class="pc-card__pill pc-card__pill--outline">{{ product.type }}</span>
           {% endif %}
           {% if product.metafields.primecuts.thc_level.value != blank %}
-            <span class="pc-pill pc-pill--outline">{{ pc_thc_level }}% THC</span>
+            <span class="pc-card__pill pc-card__pill--outline">{{ pc_thc_level }}% THC</span>
           {% endif %}
           {% if settings.product_card_show_tag and pc_first_tag != blank %}
-            <span class="pc-pill pc-pill--outline pc-pill--heavy">{{ pc_first_tag }}</span>
+            <span class="pc-card__pill pc-card__pill--outline pc-card__pill--heavy">{{ pc_first_tag }}</span>
           {% endif %}
         </div>
         <h2 class="pc-card__title">{{ product.title }}</h2>

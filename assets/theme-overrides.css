@@ -512,7 +512,7 @@ header.is-sticky {
   gap: 8px;
 }
 
-.pc-pill {
+.pc-card__pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -525,18 +525,18 @@ header.is-sticky {
   white-space: nowrap;
 }
 
-.pc-pill--dark {
+.pc-card__pill--dark {
   background-color: #0b0b0b;
   color: #fff;
 }
 
-.pc-pill--outline {
+.pc-card__pill--outline {
   border: 1px solid #d0d0d0;
   background-color: transparent;
   color: #000;
 }
 
-.pc-pill--heavy {
+.pc-card__pill--heavy {
   font-weight: 900;
 }
 
@@ -717,5 +717,24 @@ header.is-sticky {
 
   .pc-card__actions .pc-btn {
     width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Mobile responsiveness polish (global)
+   ========================================================================== */
+
+/* Product page: stretch the checkout button when the form stacks on mobile */
+@media screen and (max-width: 767px) {
+  .form-2 .div-block-47 {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+/* Collection grid: tighter card spacing on phones */
+@media screen and (max-width: 479px) {
+  .section-4 {
+    gap: 24px;
   }
 }
