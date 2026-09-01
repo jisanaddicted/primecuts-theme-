@@ -1,7 +1,31 @@
 @font-face {
-  font-family: Satoshi;
-  src: url('{{ "satoshi.zip" | asset_url }}') format("undefined");
+  font-family: 'Satoshi';
+  src: url('{{ "Satoshi-Regular.otf" | asset_url }}') format('opentype');
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('{{ "Satoshi-Medium.otf" | asset_url }}') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('{{ "Satoshi-Bold.otf" | asset_url }}') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('{{ "Satoshi-Black.otf" | asset_url }}') format('opentype');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }

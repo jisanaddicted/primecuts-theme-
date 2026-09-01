@@ -1,0 +1,111 @@
+{% comment %}
+  PrimeCuts product card
+  Design: Figma node 2091-132968 ("Frame 28", 400x827)
+  Usage: {% render 'product-card', product: product %}
+  Labels/colors are driven by theme settings (Product card group).
+{% endcomment %}
+
+{% assign pc_effect_level = product.metafields.primecuts.effect_level.value | default: 50 | at_least: 0 | at_most: 100 %}
+{% assign pc_thc_level = product.metafields.primecuts.thc_level.value | default: 50 | at_least: 0 | at_most: 100 %}
+{% assign pc_first_tag = product.tags | first %}
+
+<div class="pc-card">
+  <div class="pc-card__media">
+    {% if product.featured_image %}
+      {{
+        product.featured_image
+        | image_url: width: 706
+        | image_tag: loading: 'lazy', class: 'pc-card__image', alt: product.title
+      }}
+    {% else %}
+      <img
+        src="{{ 'Frame-25.png' | asset_url }}"
+        loading="lazy"
+        alt="{{ product.title | escape }}"
+        class="pc-card__image"
+        width="353"
+        height="353"
+      >
+    {% endif %}
+  </div>
+
+  <div class="pc-card__content">
+    <div class="pc-card__info">
+      <div class="pc-card__header">
+        <div class="pc-card__pills">
+          {% if settings.product_card_show_vendor and product.vendor != blank %}
+            <span class="pc-pill pc-pill--dark">{{ product.vendor }}</span>
+          {% endif %}
+          {% if settings.product_card_show_type and product.type != blank %}
+            <span class="pc-pill pc-pill--outline">{{ product.type }}</span>
+          {% endif %}
+          {% if product.metafields.primecuts.thc_level.value != blank %}
+            <span class="pc-pill pc-pill--outline">{{ pc_thc_level }}% THC</span>
+          {% endif %}
+          {% if settings.product_card_show_tag and pc_first_tag != blank %}
+            <span class="pc-pill pc-pill--outline pc-pill--heavy">{{ pc_first_tag }}</span>
+          {% endif %}
+        </div>
+        <h2 class="pc-card__title">{{ product.title }}</h2>
+      </div>
+
+      <div class="pc-card__terpenes">
+        <p class="pc-card__terpene-label">{{ settings.product_card_terpene_label | escape }}</p>
+        <div class="pc-card__terpene-pills">
+          {% for tag in product.tags limit: 3 %}
+            {% assign pc_terp_slug = tag | downcase | replace: ' ', '-' %}
+            <span class="pc-terpene pc-terpene--{{ pc_terp_slug }}">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="pc-slider">
+        <div class="pc-slider__labels">
+          <span>{{ settings.product_card_effect_left_label | escape }}</span>
+          <span>{{ settings.product_card_effect_right_label | escape }}</span>
+        </div>
+        <div class="pc-slider__track">
+          <div class="pc-slider__fill" style="width: {{ pc_effect_level }}%;"></div>
+        </div>
+      </div>
+
+      <div class="pc-slider">
+        <div class="pc-slider__labels">
+          <span>{{ settings.product_card_thc_left_label | escape }}</span>
+          <span>{{ settings.product_card_thc_right_label | escape }}</span>
+        </div>
+        <div class="pc-slider__track">
+          <div class="pc-slider__fill" style="width: {{ pc_thc_level }}%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pc-card__price-row">
+      <p class="pc-card__price">{{ product.price | money }}</p>
+      <p class="pc-card__tax">{{ settings.product_card_tax_note | escape }}</p>
+    </div>
+
+    <div class="pc-card__actions">
+      <a class="pc-btn pc-btn--light" href="{{ product.url }}">
+        <span>{{ settings.product_card_more_info_label | escape }}</span>
+        <img src="{{ 'Vector.png' | asset_url }}" loading="lazy" alt="" width="20" height="20">
+      </a>
+
+      {% if product.available %}
+        {% form 'product', product %}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" name="add" class="pc-btn pc-btn--dark">
+            <span>{{ settings.product_card_add_to_cart_label | escape }}</span>
+            <img src="{{ 'icon-plus-badge.png' | asset_url }}" loading="lazy" alt="" width="20" height="20">
+          </button>
+        {% endform %}
+      {% else %}
+        <div class="pc-btn pc-btn--dark pc-btn--disabled" aria-disabled="true">
+          <span>{{ settings.product_card_sold_out_label | escape }}</span>
+          <img src="{{ 'icon-plus-badge.png' | asset_url }}" loading="lazy" alt="" width="20" height="20">
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -442,3 +442,280 @@ header.is-sticky {
 .hidden {
   display: none !important;
 }
+
+/* ==========================================================================
+   Product card — Figma node 2091-132968 ("Frame 28", 400x827)
+   Self-contained styles for snippets/product-card.liquid (pc- namespace).
+   ========================================================================== */
+.pc-card {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  width: 400px;
+  max-width: 100%;
+  min-height: 827px;
+  padding: 24px;
+  box-sizing: border-box;
+  background-color: #f1f5f9;
+  border-radius: 24px;
+  box-shadow: -8px -8px 16px #fff, 8px 8px 16px #c9d9e8;
+  color: #000;
+  font-family: 'Satoshi', Arial, sans-serif;
+}
+
+.pc-card *,
+.pc-card *::before,
+.pc-card *::after {
+  box-sizing: inherit;
+}
+
+.pc-card__media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #e8edf3;
+}
+
+.pc-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pc-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.pc-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pc-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-card__pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pc-pill--dark {
+  background-color: #0b0b0b;
+  color: #fff;
+}
+
+.pc-pill--outline {
+  border: 1px solid #d0d0d0;
+  background-color: transparent;
+  color: #000;
+}
+
+.pc-pill--heavy {
+  font-weight: 900;
+}
+
+.pc-card__title {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.pc-card__terpenes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pc-card__terpene-label {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.pc-card__terpene-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pc-terpene {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background-color: #a40058;
+  color: #fff;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Per-terpene colors (German + English tag spellings) */
+.pc-terpene--limonene,
+.pc-terpene--limonen {
+  background-color: #fbff00;
+  color: #000;
+}
+
+.pc-terpene--myrcene,
+.pc-terpene--myrcen {
+  background-color: #185100;
+  color: #fff;
+}
+
+.pc-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pc-slider__labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+}
+
+.pc-slider__track {
+  height: 12px;
+  border: 1px solid #d9dce0;
+  border-radius: 36px;
+  overflow: hidden;
+}
+
+.pc-slider__fill {
+  height: 100%;
+  border-radius: 36px;
+  background-color: #000;
+}
+
+.pc-card__price-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pc-card__price {
+  margin: 0;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.pc-card__tax {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.pc-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 16px;
+  border: 0;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pc-btn img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.pc-btn--light {
+  gap: 16px;
+  background-color: #fff;
+  color: #000;
+}
+
+.pc-btn--dark {
+  gap: 10px;
+  background-color: #0b0b0b;
+  color: #fff;
+}
+
+.pc-btn--light:hover,
+.pc-btn--light:focus-visible {
+  background-color: #f3f6fa;
+}
+
+.pc-btn--dark:hover,
+.pc-btn--dark:focus-visible {
+  background-color: #262626;
+}
+
+.pc-btn--disabled {
+  cursor: default;
+  opacity: 0.9;
+}
+
+@media screen and (max-width: 991px) {
+  .pc-card {
+    width: min(100%, 420px);
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .pc-card {
+    border-radius: 16px;
+  }
+
+  .pc-card__actions {
+    flex-direction: column;
+  }
+
+  .pc-card__actions .pc-btn {
+    width: 100%;
+  }
+}

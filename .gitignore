@@ -7,3 +7,9 @@
 
 # Local static preview helper (dev tooling, not uploaded to Shopify)
 preview/
+
+# Figma REST API scratch data (local design-import tooling)
+.figma/
+
+# Shopify CLI push logs (local tooling output, not part of the theme)
+push_*.txt
