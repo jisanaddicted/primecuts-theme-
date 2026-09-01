@@ -1,0 +1,212 @@
+<section class="section-3">
+  <div class="div-block-25">
+    {% if section.settings.heading != blank %}
+      <div class="text-block-14">{{ section.settings.heading | escape }}</div>
+    {% else %}
+      <div class="text-block-14">{{ collection.title | default: 'Shop' }}</div>
+    {% endif %}
+
+    {% if section.settings.text != blank %}
+      <div class="text-block-15">{{ section.settings.text | escape }}</div>
+    {% else %}
+      <div class="text-block-15">{{ collection.description | strip_html | default: '' }}</div>
+    {% endif %}
+  </div>
+  <img src="{{ 'White-Corner-1-1.png' | asset_url }}" loading="lazy" alt="" class="image-10">
+</section>
+
+<section class="section-5">
+  <div class="w-layout-blockcontainer container w-container">
+    <p class="paragraph-8">{{ section.settings.supporting_heading | escape }}</p>
+    <p class="paragraph-9">{{ section.settings.supporting_text | escape }}</p>
+    <img src="{{ 'dna-helix-png-3d-transparent-background-2-1.png' | asset_url }}" loading="lazy" alt="" class="image1">
+    <img src="{{ 'dna-helix-png-3d-transparent-background-2-1.png' | asset_url }}" loading="lazy" alt="" class="image2">
+  </div>
+</section>
+
+{% render 'filter' %}
+<section
+  class="section-4"
+  style="padding-top: {{ section.settings.section4_padding_top | default: 60 }}px; padding-bottom: {{ section.settings.section4_padding_bottom | default: 60 }}px;"
+>
+  {% paginate collection.products by section.settings.products_per_page %}
+    {% if collection and collection.products_count > 0 %}
+      {% for product in collection.products %}
+        {% assign effect_level = product.metafields.primecuts.effect_level.value | default: 50 | at_least: 0 | at_most: 100 %}
+        {% assign thc_level = product.metafields.primecuts.thc_level.value | default: 50 | at_least: 0 | at_most: 100 %}
+        {% assign first_tag = product.tags | first %}
+
+        <div class="div-block-26">
+          <div class="div-block-27">
+            {% if product.featured_image %}
+              {{ product.featured_image | image_url: width: 706 | image_tag: loading: 'lazy', class: 'image-11', alt: product.title }}
+            {% else %}
+              <img src="{{ 'Frame-25.png' | asset_url }}" loading="lazy" alt="" class="image-11">
+            {% endif %}
+          </div>
+
+          <div class="div-block-28">
+            <div class="div-block-29">
+              <div class="div-block-31">
+                <div class="div-block-32">
+                  {% if settings.product_card_show_vendor %}
+                    <p class="paragraph">{% if product.vendor != blank %}{{ product.vendor }}{% else %}&nbsp;{% endif %}</p>
+                  {% endif %}
+                  {% if settings.product_card_show_type %}
+                    <p class="paragraph">{% if product.type != blank %}{{ product.type }}{% else %}&nbsp;{% endif %}</p>
+                  {% endif %}
+                  {% if settings.product_card_show_tag %}
+                    <p class="paragraph">{% if first_tag != blank %}{{ first_tag }}{% else %}&nbsp;{% endif %}</p>
+                  {% endif %}
+                </div>
+                <h2 class="heading"><strong>{{ product.title }}</strong></h2>
+              </div>
+            </div>
+
+            <div class="div-block-39">
+              <p class="paragraph-2">{{ settings.product_card_terpene_label | escape }}</p>
+              <div class="div-block-37">
+                {% assign tag_count = 0 %}
+                {% for tag in product.tags limit: 3 %}
+                  {% assign tag_count = tag_count | plus: 1 %}
+                  <p class="paragraph-3{% if forloop.index == 2 %} option2{% elsif forloop.index == 3 %} button3{% endif %}">{{ tag }}</p>
+                {% endfor %}
+
+                {% assign remaining = 3 | minus: tag_count %}
+                {% if remaining > 0 %}
+                  {% for i in (1..remaining) %}
+                    {% assign index = tag_count | plus: i %}
+                    <p class="paragraph-3{% if index == 2 %} option2{% elsif index == 3 %} button3{% endif %}">&nbsp;</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="div-block-43">
+              <div class="div-block-40">
+                <p class="paragraph-5">{{ settings.product_card_effect_left_label | escape }}</p>
+                <p class="paragraph-4">{{ settings.product_card_effect_right_label | escape }}</p>
+              </div>
+              <div class="div-block-41">
+                <div class="div-block-42" style="width: {{ effect_level }}%;"></div>
+              </div>
+            </div>
+
+            <div class="div-block-43">
+              <div class="div-block-40">
+                <p class="paragraph-5">{{ settings.product_card_thc_left_label | escape }}</p>
+                <p class="paragraph-4">{{ settings.product_card_thc_right_label | escape }}</p>
+              </div>
+              <div class="div-block-41">
+                <div class="div-block-42 loading" style="width: {{ thc_level }}%;"></div>
+              </div>
+            </div>
+
+            <div class="div-block-44">
+              <p class="paragraph-6">{{ product.price | money }}</p>
+              <p class="paragraph-7">{{ settings.product_card_tax_note | escape }}</p>
+            </div>
+
+            <div class="div-block-45">
+              <a class="div-block-46" href="{{ product.url }}">
+                <div class="text-block-16">{{ settings.product_card_more_info_label | escape }}</div><img src="{{ 'Vector.png' | asset_url }}" loading="lazy" alt="" class="image-12">
+              </a>
+
+              {% if product.available %}
+                {% form 'product', product %}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" name="add" class="div-block-47">
+                    <div class="text-block-17">{{ settings.product_card_add_to_cart_label | escape }}</div><img loading="lazy" src="{{ 'Frame.png' | asset_url }}" alt="" class="image-13">
+                  </button>
+                {% endform %}
+              {% else %}
+                <div class="div-block-47" aria-disabled="true">
+                  <div class="text-block-17">{{ settings.product_card_sold_out_label | escape }}</div><img loading="lazy" src="{{ 'Frame.png' | asset_url }}" alt="" class="image-13">
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="w-container">
+        <p>{{ section.settings.empty_state_text | escape }}</p>
+      </div>
+    {% endif %}
+
+    {% if paginate.pages > 1 %}
+      <div class="w-container">
+        {{ paginate | default_pagination }}
+      </div>
+    {% endif %}
+  {% endpaginate %}
+</section>
+
+{% schema %}
+{
+  "name": "Collection Product Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading (optional)"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text (optional)"
+    },
+    {
+      "type": "text",
+      "id": "supporting_heading",
+      "label": "Supporting heading",
+      "default": "Nicht planlos klicken. Sondern gezielt selektieren."
+    },
+    {
+      "type": "textarea",
+      "id": "supporting_text",
+      "label": "Supporting text",
+      "default": "Filtere nach Kategorie, Terpenen, Wirkung oder Washer-Qualität – und finde Genetik, die genau das liefert, was du brauchst. Und mehr."
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "section4_padding_top",
+      "label": "Section 4 padding top (px)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section4_padding_bottom",
+      "label": "Section 4 padding bottom (px)",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "text",
+      "id": "empty_state_text",
+      "label": "Empty state text",
+      "default": "No products found."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Product Page"
+    }
+  ]
+}
+{% endschema %}

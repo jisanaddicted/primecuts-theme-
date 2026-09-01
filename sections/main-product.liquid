@@ -1,0 +1,102 @@
+<section class="section-6">
+  <section class="section-7">
+    <div class="div-block-48">
+      <div class="div-block-49"><div><a href="{{ routes.all_products_collection_url }}">Shop all</a></div></div>
+      <div class="div-block-50"><img src="{{ 'chevron-right.png' | asset_url }}" loading="lazy" alt=""></div>
+      <div class="div-block-51"><div>{{ collection.title | default: 'Category' }}</div></div>
+      <div class="div-block-52"><img src="{{ 'chevron-right.png' | asset_url }}" loading="lazy" alt=""></div>
+      <div class="div-block-53"><div>{{ product.title }}</div></div>
+      <div class="div-block-54"></div>
+    </div>
+
+    <div class="div-block-55">
+      <div>
+        <div class="div-block-58">
+          <div class="div-block-57">
+            {% assign thumb_media = product.media | where: 'media_type', 'image' %}
+            {% for media in thumb_media limit: 4 %}
+              <div class="div-block-59">
+                {{ media | image_url: width: 200 | image_tag: loading: 'lazy', alt: product.title }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="div-block-56">
+            {% if product.featured_image %}
+              {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'image-15', alt: product.title }}
+            {% else %}
+              <img src="{{ 'Column.png' | asset_url }}" loading="lazy" alt="" class="image-15">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="div-block-68">
+        <div class="text-block-19"><strong class="bold-text-3">{{ product.title }}</strong></div>
+        <div class="div-block-44">
+          {% assign available_variant = product.selected_or_first_available_variant %}
+          {% unless available_variant.available %}
+            {% for variant in product.variants %}
+              {% if variant.available %}
+                {% assign available_variant = variant %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
+          {% endunless %}
+          <p class="paragraph-6">{{ available_variant.price | money }}</p>
+          <p class="paragraph-7">inkl. MwSt.</p>
+        </div>
+
+        <p class="paragraph-10">{{ product.description | strip_html | truncate: 420 }}</p>
+
+        <div class="form-block w-form">
+          <div class="text-block-20">Menge</div>
+          
+          {% form 'product', product, class: 'form-2', id: 'direct-checkout-form' %}
+            {% comment %} The fallback for non-JS browsers {% endcomment %}
+            <input type="hidden" name="return_to" value="/checkout">
+
+            {% if product.has_only_default_variant %}
+              {% assign available_variant = product.selected_or_first_available_variant %}
+              {% unless available_variant.available %}
+                {% for variant in product.variants %}
+                  {% if variant.available %}
+                    {% assign available_variant = variant %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endunless %}
+              <input type="hidden" name="id" value="{{ available_variant.id }}">
+            {% else %}
+              <label class="visually-hidden" for="ProductVariant-{{ section.id }}">Variant</label>
+              <select id="ProductVariant-{{ section.id }}" name="id" class="variant-select w-select">
+                {% for variant in product.variants %}
+                  <option
+                    value="{{ variant.id }}"
+                    data-available="{{ variant.available }}"
+                    {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+                  >
+                    {{ variant.title }}{% unless variant.available %} — Sold out{% endunless %}
+                  </option>
+                {% endfor %}
+              </select>
+            {% endif %}
+
+            <input class="text-field-2 w-input" type="number" name="quantity" min="1" value="1">
+            
+            <button type="submit" class="div-block-47">
+              <div class="text-block-17">Jetzt Kaufen</div>
+              <img loading="lazy" src="{{ 'Frame.png' | asset_url }}" alt="" class="image-13">
+            </button>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": []
+}
+{% endschema %}

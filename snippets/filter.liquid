@@ -1,0 +1,353 @@
+﻿{%- comment -%}
+  PrimeCuts "Filter" bar — faithful implementation of Figma node 2091:134276.
+
+  Layout & tokens from the design:
+    - row:         max-width 1143px, gap 32px, flex-wrap
+    - group chip:  41px tall, radius 8, border #d9dce0, Satoshi Medium 20px #1a1a1a,
+                   chevron on the right (rotates when the dropdown is open)
+    - radios:      20px circle — white / #cccccc outline; checked: #000 1.5px + 12px dot,
+                   label Satoshi 14px #1a1a1a, count #808080
+    - pills:       33px tall, radius 8, padding 6px 16px, Satoshi 14px
+                   default white / #1a1a1a; active black / white
+{%- endcomment -%}
+
+{% style %}
+  .pc-filter-form {
+    margin: 0;
+  }
+
+  .pc-filters {
+    --pc-font: 'Satoshi', Arial, sans-serif;
+    --pc-text: #1a1a1a;
+    --pc-muted: #808080;
+    --pc-border: #d9dce0;
+    --pc-radio-border: #cccccc;
+    --pc-radius: 8px;
+
+    background: transparent;
+    padding: 28px 16px 0;
+  }
+
+  .pc-filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 32px;
+    max-width: 1143px;
+    margin: 0 auto;
+  }
+
+  /* ---- Group ---- */
+  .pc-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .pc-filter--list {
+    width: 136px;
+  }
+
+  .pc-filter__summary {
+    list-style: none;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-height: 41px;
+    padding: 0 16px;
+    border: 1px solid var(--pc-border);
+    border-radius: var(--pc-radius);
+    background: transparent;
+    color: var(--pc-text);
+    font-family: var(--pc-font);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .pc-filter__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pc-filter__chevron {
+    flex: none;
+    display: inline-flex;
+    transition: transform 0.2s ease;
+  }
+
+  .pc-filter[open] > .pc-filter__summary .pc-filter__chevron {
+    transform: rotate(180deg);
+  }
+
+  .pc-filter__summary:focus-visible {
+    outline: 2px solid var(--pc-text);
+    outline-offset: 2px;
+  }
+
+  /* ---- Radio list ---- */
+  .pc-filter__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .pc-radio {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 31px;
+    color: var(--pc-text);
+    font-family: var(--pc-font);
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .pc-radio__input,
+  .pc-pill__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .pc-radio__control {
+    flex: none;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--pc-radio-border);
+    border-radius: 50%;
+    background: #ffffff;
+    transition: border-color 0.15s ease;
+  }
+
+  .pc-radio__input:checked + .pc-radio__control {
+    border: 1.5px solid var(--pc-text);
+  }
+
+  .pc-radio__input:checked + .pc-radio__control::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--pc-text);
+  }
+
+  .pc-radio__input:focus-visible + .pc-radio__control {
+    outline: 2px solid var(--pc-text);
+    outline-offset: 2px;
+  }
+
+  .pc-radio__input:disabled ~ * {
+    opacity: 0.4;
+  }
+
+  .pc-radio__count {
+    color: var(--pc-muted);
+    margin-left: 2px;
+  }
+
+  /* ---- Tag pills ---- */
+  .pc-filter__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pc-pill {
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 33px;
+    padding: 6px 16px;
+    border: 1px solid var(--pc-border);
+    border-radius: var(--pc-radius);
+    background: #ffffff;
+    color: var(--pc-text);
+    font-family: var(--pc-font);
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .pc-pill:has(.pc-pill__input:checked) {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff;
+  }
+
+  .pc-pill:has(.pc-pill__input:disabled) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pc-pill__input:focus-visible ~ .pc-pill__label {
+    outline: 2px solid var(--pc-text);
+    outline-offset: 2px;
+    border-radius: var(--pc-radius);
+  }
+
+  /* ---- Reset (shown only when a filter is active) ---- */
+  .pc-filters__reset {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .pc-filters__reset-link {
+    font-family: var(--pc-font);
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--pc-text);
+    text-decoration: underline;
+  }
+
+  @media screen and (max-width: 767px) {
+    .pc-filters {
+      padding: 20px 12px 0;
+    }
+
+    .pc-filters__row {
+      gap: 24px;
+    }
+  }
+{% endstyle %}
+{%- assign has_active_filters = false -%}
+{%- for facet in collection.filters -%}
+  {%- if facet.active_values.size > 0 -%}
+    {%- assign has_active_filters = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<form action="{{ collection.url }}" method="get" class="pc-filter-form">
+  <section class="pc-filters" aria-label="Filter">
+    <div class="pc-filters__row">
+
+      {%- comment -%} 1 · Produkte — radio list {%- endcomment -%}
+      <details class="pc-filter pc-filter--list" open>
+        <summary class="pc-filter__summary">
+          <span>Produkte</span>
+          <svg class="pc-filter__chevron" width="12" height="6" viewBox="0 0 12 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 4 5-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pc-filter__body">
+          {% render 'filter-value', opt: 'Genetiken', default_param: 'filter.v.type', group: 'radio' %}
+          {% render 'filter-value', opt: 'Zubehör', default_param: 'filter.v.type', group: 'radio' %}
+        </div>
+      </details>
+
+      {%- comment -%} 2 · Kategorie — radio list {%- endcomment -%}
+      <details class="pc-filter pc-filter--list" open>
+        <summary class="pc-filter__summary">
+          <span>Kategorie</span>
+          <svg class="pc-filter__chevron" width="12" height="6" viewBox="0 0 12 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 4 5-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pc-filter__body">
+          {% render 'filter-value', opt: 'Select', default_param: 'filter.v.tag', group: 'radio' %}
+          {% render 'filter-value', opt: 'Classic', default_param: 'filter.v.tag', group: 'radio' %}
+          {% render 'filter-value', opt: 'Elite', default_param: 'filter.v.tag', group: 'radio' %}
+          {% render 'filter-value', opt: 'Royal', default_param: 'filter.v.tag', group: 'radio' %}
+        </div>
+      </details>
+
+      {%- comment -%} 3 · THC — tag pills {%- endcomment -%}
+      <details class="pc-filter" open>
+        <summary class="pc-filter__summary">
+          <span>THC</span>
+          <svg class="pc-filter__chevron" width="12" height="6" viewBox="0 0 12 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 4 5-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pc-filter__tags">
+          {% render 'filter-value', opt: 'Low 10%-17%', default_param: 'filter.v.t.thc', group: 'pill' %}
+          {% render 'filter-value', opt: 'High 18%-30%', default_param: 'filter.v.t.thc', group: 'pill' %}
+        </div>
+      </details>
+
+      {%- comment -%} 4 · Wirkung — tag pills {%- endcomment -%}
+      <details class="pc-filter" open>
+        <summary class="pc-filter__summary">
+          <span>Wirkung</span>
+          <svg class="pc-filter__chevron" width="12" height="6" viewBox="0 0 12 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 4 5-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pc-filter__tags">
+          {% render 'filter-value', opt: 'Indica', default_param: 'filter.v.t.wirkung', group: 'pill' %}
+          {% render 'filter-value', opt: 'Sativa', default_param: 'filter.v.t.wirkung', group: 'pill' %}
+        </div>
+      </details>
+
+      {%- comment -%} 5 · Terpene — tag pills {%- endcomment -%}
+      <details class="pc-filter" open>
+        <summary class="pc-filter__summary">
+          <span>Terpene</span>
+          <svg class="pc-filter__chevron" width="12" height="6" viewBox="0 0 12 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 4 5-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pc-filter__tags">
+          {% render 'filter-value', opt: 'Limonen', default_param: 'filter.v.t.terpene', group: 'pill' %}
+          {% render 'filter-value', opt: 'Myrcen', default_param: 'filter.v.t.terpene', group: 'pill' %}
+          {% render 'filter-value', opt: 'Pinene', default_param: 'filter.v.t.terpene', group: 'pill' %}
+          {% render 'filter-value', opt: 'Linalool', default_param: 'filter.v.t.terpene', group: 'pill' %}
+          {% render 'filter-value', opt: 'Caryophyllen', default_param: 'filter.v.t.terpene', group: 'pill' %}
+          {% render 'filter-value', opt: 'Terpinolen', default_param: 'filter.v.t.terpene', group: 'pill' %}
+          {% render 'filter-value', opt: 'Humulen', default_param: 'filter.v.t.terpene', group: 'pill' %}
+        </div>
+      </details>
+
+      {%- comment -%} 6 · Washer — tag pills {%- endcomment -%}
+      <details class="pc-filter" open>
+        <summary class="pc-filter__summary">
+          <span>Washer</span>
+          <svg class="pc-filter__chevron" width="12" height="6" viewBox="0 0 12 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 4 5-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pc-filter__tags">
+          {% render 'filter-value', opt: 'Ja', default_param: 'filter.v.t.washer', group: 'pill' %}
+          {% render 'filter-value', opt: 'Nein', default_param: 'filter.v.t.washer', group: 'pill' %}
+        </div>
+      </details>
+
+      <input type="hidden" name="sort_by" value="{{ collection.sort_by | default: 'manual' }}">
+
+      {% if has_active_filters %}
+        <div class="pc-filters__reset">
+          <a class="pc-filters__reset-link" href="{{ collection.url }}">Alle Filter zurücksetzen</a>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+</form>

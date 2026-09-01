@@ -1,0 +1,49 @@
+<div class="div-block">
+  <div class="div-block-3">
+    <a href="{{ routes.root_url }}">
+      {% if settings.logo != blank %}
+        {% assign logo_width = settings.logo_width | default: 160 %}
+        {{ settings.logo | image_url: width: logo_width | image_tag: loading: 'lazy', alt: shop.name, class: 'image-14', id: 'Startseite' }}
+      {% else %}
+        <img id="Startseite" loading="lazy" alt="{{ shop.name }}" src="{{ 'Layer_1.png' | asset_url }}" class="image-14">
+      {% endif %}
+    </a>
+  </div>
+  <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-navigation" aria-label="Open menu">
+    <span class="menu-toggle-line"></span>
+    <span class="menu-toggle-line"></span>
+    <span class="menu-toggle-line"></span>
+  </button>
+  <div id="site-navigation" class="div-block-2">
+    {% if settings.primary_menu != blank %}
+      {% for link in settings.primary_menu.links %}
+        {% assign link_class = 'text-block' %}
+        {% case forloop.index %}
+          {% when 2 %}
+            {% assign link_class = 'text-block-4' %}
+          {% when 3 %}
+            {% assign link_class = 'text-block-3' %}
+          {% when 4 %}
+            {% assign link_class = 'text-block-2' %}
+        {% endcase %}
+
+        <div class="div-block-4">
+          <a class="{{ link_class }}" href="{{ link.url }}">{{ link.title }}</a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="div-block-4">
+        <a class="text-block" href="{{ routes.root_url }}">Startseite</a>
+      </div>
+      <div class="div-block-4">
+        <a textcolor="color" class="text-block-4" href="{{ routes.all_products_collection_url }}">Shop</a>
+      </div>
+      <div class="div-block-4">
+        <a class="text-block-3" href="{{ routes.search_url }}">Suche</a>
+      </div>
+      <div class="div-block-4">
+        <a class="text-block-2" href="{{ routes.cart_url }}">Warenkorb</a>
+      </div>
+    {% endif %}
+  </div>
+</div>

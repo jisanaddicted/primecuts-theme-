@@ -1,0 +1,46 @@
+<section class="section-2 home-categories-intro" id="warum-generation-0">
+  <div class="card-slider-section">
+    <div
+      class="div-block-9"
+      {% if section.settings.header_bg_enabled %}
+        style="background-color: {{ section.settings.header_bg_color }};"
+      {% endif %}
+    >
+      <div class="text-block-7">{{ section.settings.heading }}</div>
+      <div class="text-block-8">{{ section.settings.subheading }}</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home Categories Intro",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "header_bg_enabled",
+      "label": "Enable header background color",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Header background color",
+      "default": "#000000"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Vier Kategorien, ein Standard Echter Ursprung. Viroidfrei. <strong>Generation 0</strong>"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Weil Genetik nur dann Ã¼berzeugt, wenn sie unverfÃ¤lscht, stabil und sauber ist â€“ vom ersten Schnitt an."
+    }
+  ],
+  "presets": [{ "name": "Home Categories Intro" }]
+}
+{% endschema %}

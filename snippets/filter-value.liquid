@@ -1,0 +1,63 @@
+{%- comment -%}
+  Renders a single filter option (radio or tag pill) matching the PrimeCuts
+  "Filter" design (Figma node 2091:134276).
+
+  Accepts:
+    - opt:            {string}  Curated option label shown to customers
+    - default_param:  {string}  Fallback query param used when no matching
+                                Shopify facet is configured (e.g. 'filter.v.tag',
+                                'filter.v.type', 'filter.v.t.terpene')
+    - group:          {'radio'|'pill'}  Visual treatment
+
+  When a configured facet value exists with the same label it "wins":
+  its real param_name / value / count / active state are used, so the store's
+  Search & Discovery setup drives counts, selection state and submission.
+{%- endcomment -%}
+
+{%- assign f_param = default_param -%}
+{%- assign f_val = opt -%}
+{%- assign f_count = blank -%}
+{%- assign f_active = false -%}
+
+{%- for facet in collection.filters -%}
+  {%- for value in facet.values -%}
+    {%- if value.label == opt -%}
+      {%- assign f_param = value.param_name -%}
+      {%- assign f_val = value.value -%}
+      {%- assign f_count = value.count -%}
+      {%- assign f_active = value.active -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- if group == 'pill' -%}
+  <label class="pc-pill">
+    <input
+      class="pc-pill__input"
+      type="checkbox"
+      name="{{ f_param }}"
+      value="{{ f_val | escape }}"
+      {%- if f_active %} checked{% endif -%}
+      {%- if f_count == 0 and f_active == false %} disabled{% endif -%}
+      onchange="this.form.submit()"
+    >
+    <span class="pc-pill__label">{{ opt | escape }}</span>
+  </label>
+{%- else -%}
+  <label class="pc-radio">
+    <input
+      class="pc-radio__input"
+      type="radio"
+      name="{{ f_param }}"
+      value="{{ f_val | escape }}"
+      {%- if f_active %} checked{% endif -%}
+      {%- if f_count == 0 and f_active == false %} disabled{% endif -%}
+      onchange="this.form.submit()"
+    >
+    <span class="pc-radio__control" aria-hidden="true"></span>
+    <span class="pc-radio__label">{{ opt | escape }}</span>
+    {%- unless f_count == blank -%}
+      <span class="pc-radio__count">({{ f_count }})</span>
+    {%- endunless -%}
+  </label>
+{%- endif -%}

@@ -1,0 +1,458 @@
+ {%- comment -%}
+  1. Get the current currency conversion rate relative to your store's base currency.
+  Shopify provides this natively via the cart or currency object.
+{%- endcomment -%}
+
+{% assign base_goal_1 = 100000 %} {% comment %} $1,000 USD in cents {% endcomment %}
+{% assign base_goal_2 = 300000 %} {% comment %} $2,000 USD in cents {% endcomment %}
+{% assign finalgoal = 300000 %}
+{% assign convertedfinalgoal = finalgoal | multiplied_by: cart.currency.rate %}
+
+{{ 'cart-auto-update.css' | asset_url | stylesheet_tag }}
+{{ 'cross-sell.css' | asset_url | stylesheet_tag }}
+{{ 'cart-auto-update.js' | asset_url | script_tag }}
+
+{%- comment -%}
+  Multiply the base cents by the current currency conversion rate
+{%- endcomment -%}
+{% assign goal_1 = base_goal_1 | multiplied_by: cart.currency.rate %}
+{% assign goal_2 = base_goal_2 | multiplied_by: cart.currency.rate %}
+ 
+ <section class="section-6 cart-page">
+  <section class="section-7">
+    <div class="w-container">
+      <h1 style="color:black;" >Cart</h1>
+
+      {% if cart.item_count > 0 %}
+        <!-- Progress Bar with Milestone Rewards -->
+        <div class="cart-progress-container" data-currency="{{ cart.currency }}">
+          <div class="progress-header">
+            <h2 class="progress-header__title">akhi is cheater </h2>
+            <div class="progress-header__amount">Loading...</div>
+          </div>
+
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar">
+              <div class="progress-bar__fill"></div>
+            </div>
+          </div>
+
+          <!-- Milestone Tracking -->
+          <div class="milestones">
+            <!-- First Milestone: 1000 USD equivalent -->
+            <div class="milestone">
+              <div class="milestone__marker">1</div>
+              <div class="milestone__content">
+                <p class="milestone__label">First Free Product</p>
+                <p class="milestone__amount">Unlock at $1,000</p>
+              </div>
+              <span class="milestone__badge">Locked</span>
+            </div>
+
+            <!-- Second Milestone: 2000 USD equivalent -->
+            <div class="milestone">
+              <div class="milestone__marker">2</div>
+              <div class="milestone__content">
+                <p class="milestone__label">Second Free Product</p>
+                <p class="milestone__amount">Unlock at $2,000</p>
+              </div>
+              <span class="milestone__badge">Locked</span>
+            </div>
+          </div>
+
+          <!-- Reward Products Preview -->
+          <div class="reward-products">
+            <div class="reward-product">
+              <span class="reward-product__icon"></span>
+              <p class="reward-product__label">Free Item #1</p>
+              <p class="reward-product__sublabel">Value: $50</p>
+            </div>
+            <div class="reward-product">
+              <span class="reward-product__icon"></span>
+              <p class="reward-product__label">Free Item #2</p>
+              <p class="reward-product__sublabel">Value: $75</p>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if cart.item_count == 0 %}
+        <p>Your cart is empty.</p>
+        <p><a href="{{ routes.all_products_collection_url }}">Continue shopping</a></p>
+      {% else %}
+        <form id="cart-form" action="{{ routes.cart_url }}" method="post" novalidate>
+          <div class="cart-items" role="table" aria-label="Cart items">
+            {% for item in cart.items %}
+              <div class="cart-item" role="row">
+                <div class="cart-item__image" role="cell">
+                  <a href="{{ item.url }}">
+                    {% if item.image %}
+                      {{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: item.product.title }}
+                    {% endif %}
+                  </a>
+                </div>
+
+                <div class="cart-item__details" role="cell">
+                  <div class="cart-item__title">
+                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  </div>
+                  {% unless item.variant.title == 'Default Title' %}
+                    <div class="cart-item__variant">{{ item.variant.title }}</div>
+                  {% endunless %}
+                  <div class="cart-item__price">{{ item.final_price | money }}</div>
+                  {% if item.selling_plan_allocation %}
+                    <div class="cart-item__plan">{{ item.selling_plan_allocation.selling_plan.name }}</div>
+                  {% endif %}
+                  {% if item.properties != blank %}
+                    <ul class="cart-item__properties">
+                      {% for p in item.properties %}
+                        {% assign first_char = p.first | slice: 0 %}
+                        {% if p.last != blank and first_char != '_' %}
+                          <li>{{ p.first }}: {{ p.last }}</li>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+
+                <div class="cart-item__qty" role="cell">
+                  <label class="visually-hidden" for="updates_{{ item.key }}">Quantity</label>
+                  <input
+                    id="updates_{{ item.key }}"
+                    class="cart-qty"
+                    type="number"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    inputmode="numeric"
+                  >
+                  <a class="cart-remove" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+                </div>
+
+                <div class="cart-item__total" role="cell">
+                  {{ item.final_line_price | money }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if false %}
+          Old cross-sell renderer disabled: it attempted to fetch products with shop.products by id
+          and placed product add forms inside the main cart form.
+          <div class="cart-cross-sell">
+            <div class="cross-sell-container">
+              <h2 class="cross-sell-title">Complete Your Order</h2>
+              <p class="cross-sell-subtitle">Add these popular items to your cart</p>
+              
+              <div class="cross-sell-products">
+                {% assign cross_sell_count = 0 %}
+                {% assign cross_sell_product_ids = '' %}
+                
+                {% comment %} 
+                  Collect all cross-sell product IDs from items in cart.
+                  Each cart item's product has a metafield 'custom.cross_sell_products' 
+                  containing a list of related product IDs to recommend.
+                {% endcomment %}
+                
+                {% for item in cart.items %}
+                  {% if item.product.metafields.custom.cross_sell_products %}
+                    {% assign cross_sell_products = item.product.metafields.custom.cross_sell_products | split: ',' %}
+                    {% for product_id in cross_sell_products %}
+                      {% unless cross_sell_product_ids contains product_id %}
+                        {% assign cross_sell_product_ids = cross_sell_product_ids | append: product_id | append: ',' %}
+                      {% endunless %}
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+                
+                {% comment %} 
+                  Now loop through all collected cross-sell product IDs and display them
+                {% endcomment %}
+                {% assign cross_sell_ids_array = cross_sell_product_ids | split: ',' %}
+                
+                {% for product_id in cross_sell_ids_array %}
+                  {% if cross_sell_count < 4 and product_id != blank %}
+                    {% assign cross_sell_product = shop.products | where: 'id', product_id | first %}
+                    
+                    {% if cross_sell_product %}
+                      {% assign is_in_cart = false %}
+                      {% for cart_item in cart.items %}
+                        {% if cart_item.product_id == cross_sell_product.id %}
+                          {% assign is_in_cart = true %}
+                        {% endif %}
+                      {% endfor %}
+                      
+                      {% unless is_in_cart %}
+                        {% if cross_sell_product.available %}
+                          <div class="cross-sell-item">
+                            <div class="cross-sell-item__image">
+                              {% if cross_sell_product.featured_image %}
+                                {{ cross_sell_product.featured_image | image_url: width: 150 | image_tag: alt: cross_sell_product.title, class: 'cross-sell-item__img' }}
+                              {% else %}
+                                <img src="{{ 'placeholder.png' | asset_url }}" alt="{{ cross_sell_product.title }}" class="cross-sell-item__img">
+                              {% endif %}
+                            </div>
+                            
+                            <div class="cross-sell-item__content">
+                              <h3 class="cross-sell-item__title">{{ cross_sell_product.title | truncate: 40 }}</h3>
+                              
+                              <div class="cross-sell-item__price">
+                                <span class="cross-sell-item__price-current">{{ cross_sell_product.price | money }}</span>
+                                {% if cross_sell_product.compare_at_price > cross_sell_product.price %}
+                                  <span class="cross-sell-item__price-original">{{ cross_sell_product.compare_at_price | money }}</span>
+                                  <span class="cross-sell-item__discount">Save {{ cross_sell_product.compare_at_price | minus: cross_sell_product.price | money }}</span>
+                                {% endif %}
+                              </div>
+                              
+                              <form action="{{ routes.cart_add_url }}" method="post" class="cross-sell-form">
+                                <input type="hidden" name="id" value="{{ cross_sell_product.selected_or_first_available_variant.id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="cross-sell-btn">
+                                  <span>Add to Cart</span>
+                                  <span class="cross-sell-btn__arrow">→</span>
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                          {% assign cross_sell_count = cross_sell_count | plus: 1 %}
+                        {% endif %}
+                      {% endunless %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="cart-summary">
+            <div class="cart-summary__row">
+              <span>Subtotal</span>
+              <strong>{{ cart.total_price | money }}</strong>
+            </div>
+
+            {% if cart.cart_level_discount_applications.size > 0 %}
+              <ul class="cart-discounts" aria-label="Cart discounts">
+                {% for discount in cart.cart_level_discount_applications %}
+                  <li>
+                    <span>{{ discount.title }}</span>
+                    <span>-{{ discount.total_allocated_amount | money }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <div class="cart-actions">
+              <button class="cart-btn cart-btn--secondary" type="submit" name="update" style="display: none;">Update cart</button>
+              <button class="cart-btn cart-btn--primary" type="submit" name="checkout">Checkout</button>
+            </div>
+
+            
+          </div>
+        </form>
+
+        <!-- CROSS-SELL SECTION -->
+        {% capture cross_sell_items %}
+          {% assign cross_sell_count = 0 %}
+          {% assign rendered_cross_sell_handles = ',' %}
+
+          {% for item in cart.items %}
+            {% assign cross_sell_metafield = item.product.metafields.custom.cross_sell_products %}
+
+            {% if cross_sell_metafield != blank %}
+              {% if cross_sell_metafield.type == 'list.product_reference' %}
+                {% for cross_sell_product in cross_sell_metafield.value %}
+                  {% if cross_sell_count < 4 and cross_sell_product != blank %}
+                    {% assign handle_token = ',' | append: cross_sell_product.handle | append: ',' %}
+
+                    {% unless rendered_cross_sell_handles contains handle_token %}
+                      {% assign rendered_cross_sell_handles = rendered_cross_sell_handles | append: cross_sell_product.handle | append: ',' %}
+                      {% assign is_in_cart = false %}
+
+                      {% for cart_item in cart.items %}
+                        {% if cart_item.product_id == cross_sell_product.id %}
+                          {% assign is_in_cart = true %}
+                        {% endif %}
+                      {% endfor %}
+
+                      {% unless is_in_cart %}
+                        {% if cross_sell_product.available %}
+                          <div class="cross-sell-item">
+                            <div class="cross-sell-item__image">
+                              {% if cross_sell_product.featured_image %}
+                                {{ cross_sell_product.featured_image | image_url: width: 150 | image_tag: alt: cross_sell_product.title, class: 'cross-sell-item__img' }}
+                              {% else %}
+                                <img src="{{ 'Placeholder-Image.png' | asset_url }}" alt="{{ cross_sell_product.title }}" class="cross-sell-item__img">
+                              {% endif %}
+                            </div>
+
+                            <div class="cross-sell-item__content">
+                              <h3 class="cross-sell-item__title">{{ cross_sell_product.title | truncate: 40 }}</h3>
+
+                              <div class="cross-sell-item__price">
+                                <span class="cross-sell-item__price-current">{{ cross_sell_product.price | money }}</span>
+                                {% if cross_sell_product.compare_at_price > cross_sell_product.price %}
+                                  <span class="cross-sell-item__price-original">{{ cross_sell_product.compare_at_price | money }}</span>
+                                  <span class="cross-sell-item__discount">Save {{ cross_sell_product.compare_at_price | minus: cross_sell_product.price | money }}</span>
+                                {% endif %}
+                              </div>
+
+                              <form action="{{ routes.cart_add_url }}" method="post" class="cross-sell-form">
+                                <input type="hidden" name="id" value="{{ cross_sell_product.selected_or_first_available_variant.id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="cross-sell-btn">
+                                  <span>Add to Cart</span>
+                                  <span class="cross-sell-btn__arrow">&rarr;</span>
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+
+                          {% assign cross_sell_count = cross_sell_count | plus: 1 %}
+                        {% endif %}
+                      {% endunless %}
+                    {% endunless %}
+                  {% endif %}
+                {% endfor %}
+              {% elsif cross_sell_metafield.type == 'product_reference' %}
+                {% assign cross_sell_product = cross_sell_metafield.value %}
+
+                {% if cross_sell_count < 4 and cross_sell_product != blank %}
+                  {% assign handle_token = ',' | append: cross_sell_product.handle | append: ',' %}
+
+                  {% unless rendered_cross_sell_handles contains handle_token %}
+                    {% assign rendered_cross_sell_handles = rendered_cross_sell_handles | append: cross_sell_product.handle | append: ',' %}
+                    {% assign is_in_cart = false %}
+
+                    {% for cart_item in cart.items %}
+                      {% if cart_item.product_id == cross_sell_product.id %}
+                        {% assign is_in_cart = true %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% unless is_in_cart %}
+                      {% if cross_sell_product.available %}
+                        <div class="cross-sell-item">
+                          <div class="cross-sell-item__image">
+                            {% if cross_sell_product.featured_image %}
+                              {{ cross_sell_product.featured_image | image_url: width: 150 | image_tag: alt: cross_sell_product.title, class: 'cross-sell-item__img' }}
+                            {% else %}
+                              <img src="{{ 'Placeholder-Image.png' | asset_url }}" alt="{{ cross_sell_product.title }}" class="cross-sell-item__img">
+                            {% endif %}
+                          </div>
+
+                          <div class="cross-sell-item__content">
+                            <h3 class="cross-sell-item__title">{{ cross_sell_product.title | truncate: 40 }}</h3>
+
+                            <div class="cross-sell-item__price">
+                              <span class="cross-sell-item__price-current">{{ cross_sell_product.price | money }}</span>
+                              {% if cross_sell_product.compare_at_price > cross_sell_product.price %}
+                                <span class="cross-sell-item__price-original">{{ cross_sell_product.compare_at_price | money }}</span>
+                                <span class="cross-sell-item__discount">Save {{ cross_sell_product.compare_at_price | minus: cross_sell_product.price | money }}</span>
+                              {% endif %}
+                            </div>
+
+                            <form action="{{ routes.cart_add_url }}" method="post" class="cross-sell-form">
+                              <input type="hidden" name="id" value="{{ cross_sell_product.selected_or_first_available_variant.id }}">
+                              <input type="hidden" name="quantity" value="1">
+                              <button type="submit" class="cross-sell-btn">
+                                <span>Add to Cart</span>
+                                <span class="cross-sell-btn__arrow">&rarr;</span>
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+
+                        {% assign cross_sell_count = cross_sell_count | plus: 1 %}
+                      {% endif %}
+                    {% endunless %}
+                  {% endunless %}
+                {% endif %}
+              {% else %}
+                {% assign cross_sell_handles = cross_sell_metafield.value | default: cross_sell_metafield | split: ',' %}
+
+                {% for cross_sell_handle in cross_sell_handles %}
+                  {% assign cross_sell_handle = cross_sell_handle | strip %}
+                  {% assign cross_sell_product = all_products[cross_sell_handle] %}
+
+                  {% if cross_sell_count < 4 and cross_sell_product != blank %}
+                    {% assign handle_token = ',' | append: cross_sell_product.handle | append: ',' %}
+
+                    {% unless rendered_cross_sell_handles contains handle_token %}
+                      {% assign rendered_cross_sell_handles = rendered_cross_sell_handles | append: cross_sell_product.handle | append: ',' %}
+                      {% assign is_in_cart = false %}
+
+                      {% for cart_item in cart.items %}
+                        {% if cart_item.product_id == cross_sell_product.id %}
+                          {% assign is_in_cart = true %}
+                        {% endif %}
+                      {% endfor %}
+
+                      {% unless is_in_cart %}
+                        {% if cross_sell_product.available %}
+                          <div class="cross-sell-item">
+                            <div class="cross-sell-item__image">
+                              {% if cross_sell_product.featured_image %}
+                                {{ cross_sell_product.featured_image | image_url: width: 150 | image_tag: alt: cross_sell_product.title, class: 'cross-sell-item__img' }}
+                              {% else %}
+                                <img src="{{ 'Placeholder-Image.png' | asset_url }}" alt="{{ cross_sell_product.title }}" class="cross-sell-item__img">
+                              {% endif %}
+                            </div>
+
+                            <div class="cross-sell-item__content">
+                              <h3 class="cross-sell-item__title">{{ cross_sell_product.title | truncate: 40 }}</h3>
+
+                              <div class="cross-sell-item__price">
+                                <span class="cross-sell-item__price-current">{{ cross_sell_product.price | money }}</span>
+                                {% if cross_sell_product.compare_at_price > cross_sell_product.price %}
+                                  <span class="cross-sell-item__price-original">{{ cross_sell_product.compare_at_price | money }}</span>
+                                  <span class="cross-sell-item__discount">Save {{ cross_sell_product.compare_at_price | minus: cross_sell_product.price | money }}</span>
+                                {% endif %}
+                              </div>
+
+                              <form action="{{ routes.cart_add_url }}" method="post" class="cross-sell-form">
+                                <input type="hidden" name="id" value="{{ cross_sell_product.selected_or_first_available_variant.id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="cross-sell-btn">
+                                  <span>Add to Cart</span>
+                                  <span class="cross-sell-btn__arrow">&rarr;</span>
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+
+                          {% assign cross_sell_count = cross_sell_count | plus: 1 %}
+                        {% endif %}
+                      {% endunless %}
+                    {% endunless %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        {% endcapture %}
+
+        {% if cross_sell_items contains 'cross-sell-item' %}
+          <div class="cart-cross-sell">
+            <div class="cross-sell-container">
+              <h2 class="cross-sell-title">Complete Your Order</h2>
+              <p class="cross-sell-subtitle">Add these popular items to your cart</p>
+
+              <div class="cross-sell-products">
+                {{ cross_sell_items }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        <!-- END CROSS-SELL SECTION -->
+      {% endif %}
+    </div>
+  </section>
+</section>
+
+{% schema %}
+{
+  "name": "Main cart",
+  "settings": []
+}
+{% endschema %}

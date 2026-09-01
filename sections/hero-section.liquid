@@ -1,0 +1,97 @@
+{% assign bg_image = section.settings.background_image %}
+
+<section
+  class="section"
+  {% if bg_image != blank %}
+    style="background-image: url({{ bg_image | image_url: width: 2400 }}); background-size: cover; background-position: center; background-repeat: no-repeat;"
+  {% endif %}
+>
+  <div class="div-block-5">
+    {% if section.settings.heading != blank %}
+      <div>
+        <h1>{{ section.settings.heading | escape }}</h1>
+      </div>
+    {% endif %}
+
+    {% if section.settings.text != blank %}
+      <div>
+        <div class="hero-paragraph">{{ section.settings.text }}</div>
+      </div>
+    {% endif %}
+
+    <div class="div-block-6">
+      {% if section.settings.primary_button_label != blank %}
+        <a
+          href="{% if section.settings.primary_button_link != blank %}{{ section.settings.primary_button_link }}{% else %}{{ routes.all_products_collection_url }}{% endif %}"
+          class="button w-button"
+        >
+          {{ section.settings.primary_button_label | escape }}
+        </a>
+      {% endif %}
+
+      {% if section.settings.secondary_button_label != blank %}
+        <a
+          href="{% if section.settings.secondary_button_link != blank %}{{ section.settings.secondary_button_link }}{% else %}#warum-generation-0{% endif %}"
+          class="button-2 w-button"
+        >
+          {{ section.settings.secondary_button_label | escape }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="div-block-7">
+    <img src="{{ 'corner-view-1-1.png' | asset_url }}" loading="lazy" alt="" class="image">
+    <img src="{{ 'B-Corner-2-2.png' | asset_url }}" loading="lazy" alt="" class="image-2">
+    <img src="{{ 'G-Corner-2-1.png' | asset_url }}" loading="lazy" alt="" class="image-3">
+    <img src="{{ 'W-Corner-2-1.png' | asset_url }}" loading="lazy" alt="" class="image-4">
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Echte QualitÃ¤t hat einen Ursprung: Genetik."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p><strong>Generation 0</strong> â€“ original, viroidfrei, mit PrÃ¤zision &amp; Sorgfalt kultiviert. Weil alles mit der Genetik beginnt.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Primary button label",
+      "default": "Shop"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label",
+      "default": "Warum Generation 0?"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+# Shopify CLI local auth config (never commit)
+.shopify/
+**/.shopify/
+
+# Editor / local tooling that is not part of the theme
+.vscode/
+
+# Local static preview helper (dev tooling, not uploaded to Shopify)
+preview/

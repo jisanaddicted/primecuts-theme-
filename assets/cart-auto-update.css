@@ -1,0 +1,82 @@
+/* Cart Auto Update Styles */
+
+/* Quantity input loading state */
+.cart-qty.updating {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.cart-qty.updating::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  border: 2px solid #ddd;
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* Update status message */
+.cart-update-message {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+}
+
+.cart-update-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.cart-update-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.cart-update-message.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Optional: Add visual feedback to updated items */
+.cart-item {
+  transition: background-color 0.3s ease;
+}
+
+.cart-item.just-updated {
+  background-color: rgba(212, 237, 218, 0.3);
+}

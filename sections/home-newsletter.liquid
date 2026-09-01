@@ -1,0 +1,51 @@
+<div class="div-block-15">
+  <div class="div-block-16">
+    <div class="div-block-17">
+      <img loading="lazy" src="{{ 'dna-helix-png-3d-transparent-background-1.png' | asset_url }}" alt="" class="image-6">
+      <img loading="lazy" src="{{ 'dna-helix-png-3d-transparent-background-1.png' | asset_url }}" alt="" class="image-7">
+      <div class="text-block-11"><strong class="bold-text-2">{{ section.settings.heading | escape }}</strong></div>
+      <div class="text-block-12">{{ section.settings.text | escape }}</div>
+      <div class="w-form">
+        <form method="post" action="/contact#contact_form" accept-charset="UTF-8" class="form" id="contact_form">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input class="text-field w-input" maxlength="256" name="contact[email]" placeholder="{{ section.settings.email_placeholder | escape }}" type="email" required>
+          <input type="submit" class="submit-button w-button" value="{{ section.settings.button_label | escape }}">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Home Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Wenn Genetik droppt – du erfährst es zuerst."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Melde dich zum Newsletter an und erfahre als Erster, wenn neue Cuts verfügbar sind."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Submit"
+    }
+  ],
+  "presets": [{ "name": "Home Newsletter" }]
+}
+{% endschema %}

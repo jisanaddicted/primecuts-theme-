@@ -1,0 +1,130 @@
+<footer>
+  <div class="div-block-19">
+    <div class="div-block-20">
+      <div class="div-block-21">
+        {% if settings.logo != blank %}
+          {{ settings.logo | image_url: width: 220 | image_tag: loading: 'lazy', alt: shop.name, class: 'image-8' }}
+        {% else %}
+          <img src="{{ 'Layer_2.png' | asset_url }}" loading="lazy" alt="" class="image-8">
+        {% endif %}
+      </div>
+
+      <div class="div-block-22">
+        {% assign menu_1 = section.settings.menu_1 %}
+        {% assign menu_2 = section.settings.menu_2 %}
+        {% assign menu_3 = section.settings.menu_3 %}
+        {% assign menu_4 = section.settings.menu_4 %}
+
+        {% if menu_1 != blank %}
+          <div class="div-block-23">
+            <div>
+              {% if menu_1.links.size > 0 %}
+                <a href="{{ menu_1.links.first.url }}" class="link-5">{{ menu_1.title }}</a>
+              {% else %}
+                <div class="link-5">{{ menu_1.title }}</div>
+              {% endif %}
+            </div>
+            <div class="div-block-24">
+              {% for link in menu_1.links %}
+                <a href="{{ link.url }}" class="link-6">{{ link.title }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if menu_2 != blank %}
+          <div class="div-block-23">
+            <div>
+              {% if menu_2.links.size > 0 %}
+                <a href="{{ menu_2.links.first.url }}" class="link-5">{{ menu_2.title }}</a>
+              {% else %}
+                <div class="link-5">{{ menu_2.title }}</div>
+              {% endif %}
+            </div>
+            <div class="div-block-24">
+              {% for link in menu_2.links %}
+                <a href="{{ link.url }}" class="link-6">{{ link.title }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if menu_3 != blank %}
+          <div class="div-block-23">
+            <div>
+              {% if menu_3.links.size > 0 %}
+                <a href="{{ menu_3.links.first.url }}" class="link-5">{{ menu_3.title }}</a>
+              {% else %}
+                <div class="link-5">{{ menu_3.title }}</div>
+              {% endif %}
+            </div>
+            <div class="div-block-24">
+              {% for link in menu_3.links %}
+                <a href="{{ link.url }}" class="link-6">{{ link.title }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if menu_4 != blank %}
+          <div class="div-block-23">
+            <div>
+              {% if menu_4.links.size > 0 %}
+                <a href="{{ menu_4.links.first.url }}" class="link-5">{{ menu_4.title }}</a>
+              {% else %}
+                <div class="link-5">{{ menu_4.title }}</div>
+              {% endif %}
+            </div>
+            <div class="div-block-24">
+              {% for link in menu_4.links %}
+                <a href="{{ link.url }}" class="link-6">{{ link.title }}</a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div>
+      {% assign year = 'now' | date: '%Y' %}
+      {% assign shop_name = shop.name %}
+      {% assign copyright_template = section.settings.copyright_text | default: "Â©{year} {shop_name}. All rights reserved." %}
+      {% assign copyright_text = copyright_template | replace: "{year}", year | replace: "{shop_name}", shop_name %}
+      <div class="text-block-13">{{ copyright_text }}</div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "Footer menu 1"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Footer menu 2"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_3",
+      "label": "Footer menu 3"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_4",
+      "label": "Footer menu 4"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "Â©{year} {shop_name}. All rights reserved."
+    }
+  ]
+}
+{% endschema %}

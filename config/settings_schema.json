@@ -1,0 +1,121 @@
+[
+  {
+    "name": "Theme settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo width",
+        "min": 40,
+        "max": 400,
+        "step": 10,
+        "unit": "px",
+        "default": 160
+      },
+      {
+        "type": "header",
+        "content": "Navigation"
+      },
+      {
+        "type": "link_list",
+        "id": "primary_menu",
+        "label": "Primary menu",
+        "default": "main-menu"
+      }
+    ]
+  },
+  {
+    "name": "Product card",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_vendor",
+        "label": "Show vendor line",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_type",
+        "label": "Show product type line",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_tag",
+        "label": "Show first tag line",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Labels"
+      },
+      {
+        "type": "text",
+        "id": "product_card_terpene_label",
+        "label": "Terpene label",
+        "default": "Terpene:"
+      },
+      {
+        "type": "text",
+        "id": "product_card_effect_left_label",
+        "label": "Effect left label",
+        "default": "beruhigend"
+      },
+      {
+        "type": "text",
+        "id": "product_card_effect_right_label",
+        "label": "Effect right label",
+        "default": "anregend"
+      },
+      {
+        "type": "text",
+        "id": "product_card_thc_left_label",
+        "label": "THC left label",
+        "default": "Wenig THC"
+      },
+      {
+        "type": "text",
+        "id": "product_card_thc_right_label",
+        "label": "THC right label",
+        "default": "Viel THC"
+      },
+      {
+        "type": "text",
+        "id": "product_card_tax_note",
+        "label": "Tax note",
+        "default": "inkl. MwSt."
+      },
+      {
+        "type": "text",
+        "id": "product_card_more_info_label",
+        "label": "More info label",
+        "default": "mehr Infos"
+      },
+      {
+        "type": "text",
+        "id": "product_card_add_to_cart_label",
+        "label": "Add to cart label",
+        "default": "In den Warenkorb"
+      },
+      {
+        "type": "text",
+        "id": "product_card_sold_out_label",
+        "label": "Sold out label",
+        "default": "Ausverkauft"
+      }
+    ]
+  }
+]
