@@ -803,6 +803,78 @@ header.is-sticky {
   pointer-events: none;
 }
 
+/* Sky spotlights — ethereal diffused light beams in the top-right corner
+   Animated to oscillate left-to-right and right-to-left */
+.pc-cat__sky-spotlights {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 55%;
+  height: 55%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.pc-cat__spotlight {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.pc-cat__spotlight--1 {
+  top: 5%;
+  right: 10%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(189, 189, 189, 0.3) 0%, transparent 70%);
+  filter: blur(30px);
+  animation-name: sky-spotlight-1;
+  animation-duration: 8s;
+}
+
+.pc-cat__spotlight--2 {
+  top: 20%;
+  right: 2%;
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle, rgba(255, 242, 212, 0.22) 0%, transparent 70%);
+  filter: blur(25px);
+  animation-name: sky-spotlight-2;
+  animation-duration: 7s;
+}
+
+.pc-cat__spotlight--3 {
+  top: 40%;
+  right: 8%;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, transparent 70%);
+  filter: blur(20px);
+  animation-name: sky-spotlight-3;
+  animation-duration: 6s;
+}
+
+@keyframes sky-spotlight-1 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  50%  { transform: translate(-45px, 20px) scale(1.25); opacity: 0.65; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+}
+
+@keyframes sky-spotlight-2 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  50%  { transform: translate(-55px, -15px) scale(1.35); opacity: 0.75; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+}
+
+@keyframes sky-spotlight-3 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.35; }
+  50%  { transform: translate(-35px, 25px) scale(1.15); opacity: 0.55; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+}
+
 .pc-cat__streak {
   position: absolute;
   inset: 0;
@@ -894,9 +966,29 @@ header.is-sticky {
     font-size: 64px;
   }
 
-  .pc-cat__pack {
+    .pc-cat__pack {
     height: 100%;
     right: 24px;
+  }
+
+  .pc-cat__sky-spotlights {
+    width: 50%;
+    height: 50%;
+  }
+
+  .pc-cat__spotlight--1 {
+    width: 130px;
+    height: 130px;
+  }
+
+  .pc-cat__spotlight--2 {
+    width: 95px;
+    height: 95px;
+  }
+
+  .pc-cat__spotlight--3 {
+    width: 75px;
+    height: 75px;
   }
 }
 
@@ -933,8 +1025,31 @@ header.is-sticky {
     opacity: 0.16;
   }
 
-  .pc-cat__beam {
+    .pc-cat__beam {
     opacity: 0.7;
+  }
+
+  .pc-cat__sky-spotlights {
+    width: 50%;
+    height: 50%;
+  }
+
+  .pc-cat__spotlight--1 {
+    width: 110px;
+    height: 110px;
+    filter: blur(25px);
+  }
+
+  .pc-cat__spotlight--2 {
+    width: 85px;
+    height: 85px;
+    filter: blur(20px);
+  }
+
+  .pc-cat__spotlight--3 {
+    width: 65px;
+    height: 65px;
+    filter: blur(16px);
   }
 }
 
@@ -952,7 +1067,30 @@ header.is-sticky {
     font-size: 42px;
   }
 
-  .pc-cat__ghost {
+    .pc-cat__ghost {
     font-size: 110px;
+  }
+
+  .pc-cat__sky-spotlights {
+    width: 45%;
+    height: 45%;
+  }
+
+  .pc-cat__spotlight--1 {
+    width: 90px;
+    height: 90px;
+    filter: blur(20px);
+  }
+
+  .pc-cat__spotlight--2 {
+    width: 70px;
+    height: 70px;
+    filter: blur(18px);
+  }
+
+  .pc-cat__spotlight--3 {
+    width: 55px;
+    height: 55px;
+    filter: blur(14px);
   }
 }

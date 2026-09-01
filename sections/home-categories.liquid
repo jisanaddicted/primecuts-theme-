@@ -24,11 +24,16 @@
                 <linearGradient id="pcCatBeamGradient-{{ forloop.index0 }}" x1="23.4546" y1="0" x2="23.4546" y2="899.452" gradientUnits="userSpaceOnUse">
                   <stop stop-color="#CDCDCD"/>
                   <stop offset="1" stop-color="#FDF2D4"/>
-                </linearGradient>
+                  </linearGradient>
               </defs>
             </svg>
             <span class="pc-cat__streak"></span>
             <img class="pc-cat__pack" src="{{ pc_pack_img | asset_url }}" alt="" loading="lazy" width="{{ pc_pack_w }}" height="{{ pc_pack_h }}">
+            <div class="pc-cat__sky-spotlights" aria-hidden="true">
+              <span class="pc-cat__spotlight pc-cat__spotlight--1"></span>
+              <span class="pc-cat__spotlight pc-cat__spotlight--2"></span>
+              <span class="pc-cat__spotlight pc-cat__spotlight--3"></span>
+            </div>
           </div>
 
           <div class="pc-cat__content">
