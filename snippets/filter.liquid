@@ -171,8 +171,10 @@
 
   /* ---- Tag pills ---- */
   .pc-filter__tags {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: start;
+    justify-items: start;
     gap: 8px;
   }
 
@@ -236,6 +238,11 @@
 
     .pc-filters__row {
       gap: 24px;
+    }
+
+    /* 4 pill columns can overflow a phone — drop to 2 per row */
+    .pc-filter__tags {
+      grid-template-columns: repeat(2, auto);
     }
   }
 {% endstyle %}
