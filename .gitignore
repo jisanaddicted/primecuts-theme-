@@ -13,3 +13,7 @@ preview/
 
 # Shopify CLI push logs (local tooling output, not part of the theme)
 push_*.txt
+
+# Local one-off CSS patch script and npm output log (dev tooling)
+fix_mobile_css.js
+npm_install.log
