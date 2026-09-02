@@ -732,6 +732,14 @@ header.is-sticky {
   }
 }
 
+/* Collection grid: left-align cards so a single leftover product in the last
+   row sits at the left edge instead of being centered. The Webflow export
+   uses justify-content: center on .section-4 (base + <=991px), which centers
+   ragged last rows; flex-start keeps full rows packed from the left. */
+.section-4 {
+  justify-content: flex-start;
+}
+
 /* Collection grid: tighter card spacing on phones */
 @media screen and (max-width: 479px) {
   .section-4 {
