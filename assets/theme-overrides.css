@@ -1,11 +1,37 @@
 /* Custom overrides (kept separate from Webflow export). */
+/* Categories intro <-> category cards spacing. In the original Webflow
+   one-piece section the intro text (div-block-9) and the cards (div-block-10)
+   shared a single .card-slider-section, separated by div-block-10's 108px
+   margin-top (72px at <=991px). After splitting them into two sections the
+   intro lost its bottom space — the text touched the first card on desktop —
+   while on mobile both sections' paddings double-counted (216px gap).
+   The gap is now owned by the intro section's "Bottom spacing" theme setting
+   (default 108px, applied to the #shopify-section wrapper which carries the
+   #17191D canvas so the space blends into the page; scales to ~72px on
+   mobile). Keep the inner padding at 0 so the setting has the final say. */
 .home-categories-intro .card-slider-section {
   height: auto;
   min-height: 0;
+  padding-bottom: 0;
 }
 
 .home-categories-intro .div-block-9 {
   height: auto;
+}
+
+/* Categories cards section: zero the hardcoded Webflow bottom space — the
+   3100px fixed section height on desktop (~700px taller than the 2400px card
+   stack) and the 120px/96px bottom padding at <=991px/<=767px. The gap below
+   the last card is owned by the section's "Bottom spacing" theme setting
+   (default 100px, applied to the #shopify-section wrapper which carries the
+   #17191D canvas so the space blends into the page). These overrides outrank
+   the Webflow media-query shorthands (higher specificity), so they apply at
+   every width. */
+.home-categories .card-slider-section {
+  height: auto;
+  min-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 #shopify-section-hero-section .section {

@@ -1,3 +1,18 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    background-color: #17191d;
+    padding-top: {{ section.settings.spacing_top }}px;
+    padding-bottom: {{ section.settings.spacing_bottom }}px;
+  }
+
+  @media screen and (max-width: 991px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.spacing_top | times: 0.67 | round }}px;
+      padding-bottom: {{ section.settings.spacing_bottom | times: 0.67 | round }}px;
+    }
+  }
+{%- endstyle -%}
+
 <div class="div-block-15">
   <div class="div-block-16">
     <div class="div-block-17">
@@ -44,6 +59,32 @@
       "id": "button_label",
       "label": "Button label",
       "default": "Submit"
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top",
+      "label": "Top spacing",
+      "info": "Space between this section and the one above. Scales to ~2/3 on mobile.",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom",
+      "label": "Bottom spacing",
+      "info": "Space between this section and the one below. Scales to ~2/3 on mobile.",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
     }
   ],
   "presets": [{ "name": "Home Newsletter" }]

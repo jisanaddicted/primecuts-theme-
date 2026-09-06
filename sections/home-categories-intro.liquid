@@ -1,3 +1,18 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    background-color: #17191d;
+    padding-top: {{ section.settings.spacing_top }}px;
+    padding-bottom: {{ section.settings.spacing_bottom }}px;
+  }
+
+  @media screen and (max-width: 991px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.spacing_top | times: 0.67 | round }}px;
+      padding-bottom: {{ section.settings.spacing_bottom | times: 0.67 | round }}px;
+    }
+  }
+{%- endstyle -%}
+
 <section class="section-2 home-categories-intro" id="warum-generation-0">
   <div class="card-slider-section">
     <div
@@ -39,6 +54,32 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "Weil Genetik nur dann Ã¼berzeugt, wenn sie unverfÃ¤lscht, stabil und sauber ist â€“ vom ersten Schnitt an."
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_top",
+      "label": "Top spacing",
+      "info": "Space between this section and the one above. Scales to ~2/3 on mobile.",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "spacing_bottom",
+      "label": "Bottom spacing",
+      "info": "Space between this section and the one below. Scales to ~2/3 on mobile.",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 108
     }
   ],
   "presets": [{ "name": "Home Categories Intro" }]
