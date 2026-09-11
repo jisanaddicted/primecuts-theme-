@@ -1,18 +1,9 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero": {
       "type": "hero-section",
       "settings": {
-        "heading": "Echte QualitÃ¤t hat einen Ursprung: Genetik.",
+        "heading": "Echte Qualität hat einen Ursprung: Genetik.",
         "text": "<p><strong>Generation 0</strong> â€“ original, viroidfrei, mit PrÃ¤zision &amp; Sorgfalt kultiviert. Weil alles mit der Genetik beginnt.</p>",
         "primary_button_label": "Shop",
         "primary_button_link": "",
