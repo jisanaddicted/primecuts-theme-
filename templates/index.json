@@ -11,19 +11,45 @@
   "sections": {
     "hero": {
       "type": "hero-section",
-      "settings": {}
+      "settings": {
+        "heading": "Echte QualitÃ¤t hat einen Ursprung: Genetik.",
+        "text": "<p><strong>Generation 0</strong> â€“ original, viroidfrei, mit PrÃ¤zision &amp; Sorgfalt kultiviert. Weil alles mit der Genetik beginnt.</p>",
+        "primary_button_label": "Shop",
+        "primary_button_link": "",
+        "secondary_button_label": "Warum Generation 0?",
+        "secondary_button_link": "",
+        "spacing_top": 0,
+        "spacing_bottom": 0
+      }
     },
     "categories_intro": {
       "type": "home-categories-intro",
-      "settings": {}
+      "settings": {
+        "header_bg_enabled": false,
+        "header_bg_color": "#000000",
+        "heading": "Vier Kategorien, ein Standard Echter Ursprung. Viroidfrei. <strong>Generation 0</strong>",
+        "subheading": "Weil Genetik nur dann Ã¼berzeugt, wenn sie unverfÃ¤lscht, stabil und sauber ist â€“ vom ersten Schnitt an.",
+        "spacing_top": 0,
+        "spacing_bottom": 108
+      }
     },
     "categories": {
       "type": "home-categories",
-      "settings": {}
+      "settings": {
+        "spacing_top": 100,
+        "spacing_bottom": 100
+      }
     },
     "newsletter": {
       "type": "home-newsletter",
-      "settings": {}
+      "settings": {
+        "heading": "Wenn Genetik droppt – du erfährst es zuerst.",
+        "text": "Melde dich zum Newsletter an und erfahre als Erster, wenn neue Cuts verfügbar sind.",
+        "email_placeholder": "Email",
+        "button_label": "Submit",
+        "spacing_top": 0,
+        "spacing_bottom": 0
+      }
     }
   },
   "order": [
