@@ -1,5 +1,14 @@
 [
   {
+    "name": "theme_info",
+    "theme_name": "Primecuts",
+    "theme_version": "1.0.0",
+    "theme_author": "Primecuts",
+    "theme_documentation_url": "",
+    "theme_support_url": "",
+    "settings": []
+  },
+  {
     "name": "Theme settings",
     "settings": [
       {

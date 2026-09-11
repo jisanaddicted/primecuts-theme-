@@ -18,6 +18,8 @@
     <link rel="apple-touch-icon" href="{{ 'webclip.png' | asset_url }}">
   </head>
   <body>
+    {% render 'age-gate' %}
+
     {% section 'header' %}
 
     {{ content_for_layout }}
